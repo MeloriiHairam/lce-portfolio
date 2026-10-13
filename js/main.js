@@ -5,13 +5,29 @@
 
   // Theme toggle (saved in localStorage)
   var themeBtn = document.querySelector(".theme-btn");
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function setTheme(t, save) {
+    root.setAttribute("data-theme", t);
+    if (themeMeta) themeMeta.setAttribute("content", t === "dark" ? "#121110" : "#faf7f0");
+    if (themeBtn) themeBtn.setAttribute("aria-pressed", t === "dark");
+    if (save) { try { localStorage.setItem("theme", t); } catch (e) {} }
+  }
+  setTheme(root.getAttribute("data-theme") || "light", false);
   if (themeBtn) {
     themeBtn.addEventListener("click", function () {
-      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      try { localStorage.setItem("theme", next); } catch (e) {}
+      setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark", true);
     });
   }
+  // Follow the phone's own setting until the visitor picks one with the button
+  try {
+    var mq = matchMedia("(prefers-color-scheme: dark)");
+    var follow = function (e) { if (!localStorage.getItem("theme")) setTheme(e.matches ? "dark" : "light", false); };
+    mq.addEventListener ? mq.addEventListener("change", follow) : mq.addListener(follow);
+  } catch (e) {}
+  // Coming back with the Back button: re-apply the saved choice
+  window.addEventListener("pageshow", function () {
+    try { var t = localStorage.getItem("theme"); if (t) setTheme(t, false); } catch (e) {}
+  });
 
   // Mobile menu
   var nav = document.querySelector(".nav");

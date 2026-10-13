@@ -11,7 +11,7 @@
   --serif: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
   --sans: "DM Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  color-scheme: light;
+  color-scheme: light dark;
 }
 /* ===== Colours (dark) ===== */
 [data-theme="dark"] {
@@ -213,3 +213,11 @@ body.bleeding .photo-wrap { box-shadow: 0 0 0 10px color-mix(in srgb, var(--blee
 .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
 .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
 @media (max-width: 600px) { .lb { padding: 3.5rem .5rem 4.5rem; } .lb-prev, .lb-next { top: auto; bottom: 1rem; transform: none; } .lb-prev { left: 30%; } .lb-next { right: 30%; } }
+
+/* ===== Phone fixes for light/dark mode ===== */
+html { background: var(--bg); }
+[data-theme="light"] { color-scheme: light only; }
+[data-theme="dark"] { color-scheme: dark only; }
+.theme-btn, .menu-btn { -webkit-tap-highlight-color: transparent; touch-action: manipulation; flex-shrink: 0; position: relative; z-index: 2; }
+.theme-icon { pointer-events: none; }
+@media (max-width: 720px), (hover: none) { body { background-attachment: scroll; } }
